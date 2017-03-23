@@ -1,18 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Navigation Menue </title>
-</head>>
+    <title>Big Smart options</title>
+    <link rel="stylesheet" href="styles/basic.css">
+    <link rel="stylesheet" href="styles/login.css">
+</head>
 <body>
-<h1> BIG Smart Home </h1>
-<div>
-    <ul>
-        <li class="selected"><a href="#">Home</a></li>
-        <li><a href="#">Dummy1</a></li>
-        <li><a href="#">Dummy2</a></li>
-        <li><a href="#">Dummy3</a></li>
-        <li><a href="#">Dummy4</a></li>
-    </ul>
-</div>
+	<main>
+		<header class="header-background header-height fullWidth">
+			<div id="header">
+				<img id="header-pic" src="images/big-logo-small.png" alt="das logo des instituts" />
+				<h1 id="header-text">BIG Smart Home</h1>
+			</div>
+		</header>
+		<section id="content" class="content-background fullWidth">
+			<div class="innerContent">
+				<h1>Passwort ändern</h1>
+				<form action="overview.html" method="post">
+					<div class="row">
+						<div class="colHeader">
+							<label for="oldPassword">Altes Passwort</label> 
+						</div>
+						<div class="colContent">
+							<input class="input-height roundborder" type="password" id="oldPasswort" name="oldPassword" placeholder="Altes Passwort" />		
+						</div>		
+					</div>
+					<div class="row">
+						<div class="colHeader">
+							<label for="newPasswort">Neues Passwort</label>
+						</div>
+						<div class="colContent">
+							<input class="input-height roundborder"  maxlength="12" type="password" id="newPasswort" name="newPasswort" placeholder="Neues Passwort" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="colHeader">
+							<label for="retypPasswort">Passwort wiederholen</label>
+						</div>
+						<div class="colContent">
+							<input class="input-height roundborder" type="password" id="retypPasswort" name="retypPasswort" placeholder="Neues Passwort wiederholen" />
+						</div>
+					</div>
+					<input class="button roundborder" type="submit" value="Änderung speichern" name="action" />
+				</form>
+			</div>
+		</section>
+		<footer id="footer" class="content-background">
+			<div style="padding-top:10px">
+			<span class="footerText">&copy; 2017 BIG Smart Home</span>
+			</div>
+		</footer>
+    </main>
+    
+
 </body>
 </html>
