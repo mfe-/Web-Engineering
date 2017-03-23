@@ -1,0 +1,27 @@
+#content
+{
+	min-height:1980px;
+	max-height:1980px;
+}
+.innerContent
+{
+	padding:15px;
+}
+
+.halfwidth
+{
+	width:50%;
+}
+
+.background-White
+{
+	background-color:white;
+}
+.component
+{
+	height:180px;
+}
+.component-margin
+{
+	margin-bottom:20px;
+}
