@@ -5,22 +5,45 @@
     <link rel="stylesheet" href="styles/basic.css">
     <link rel="stylesheet" href="styles/login.css">
 </head>
-
 <body>
-    <header>
-        <img src="images/big-logo-small.png" alt="das logo des instituts" />
-    </header>
-    <main>
-        <h1>Anmelden</h1>
-        <form action="overview.html" method="post">
-            <p> <label for="username">Benutzername</label> <input type="text" id="username" name="username" /></p>
-            <p> <label for="password">Passwort</label> <input type="password" id="password" name="password" /></p>
-            <p><input type="submit" value="Submit the form" name="action" /></p>
-        </form>
+	<main>
+		<header class="header-background header-height fullWidth">
+			<div id="header">
+				<img id="header-pic" src="images/big-logo-small.png" alt="das logo des instituts" />
+				<h1 id="header-text">BIG Smart Home</h1>
+			</div>
+		</header>
+		<section id="content" class="content-background fullWidth">
+			<div class="innerContent">
+				<h1>Anmelden</h1>
+				<form action="overview.html" method="post">
+					<div class="row">
+						<div class="colHeader">
+							<label for="username">Benutzername</label> 
+						</div>
+						<div class="colContent">
+							<input class="input-height roundborder" type="text" id="username" name="username" />		
+						</div>		
+					</div>
+					<div class="row">
+						<div class="colHeader">
+							<label for="password">Passwort</label>
+						</div>
+						<div class="colContent">
+							<input class="input-height roundborder" type="password" id="password" name="password" />
+						</div>
+					</div>
+					<input class="button roundborder" type="submit" value="Anmelden" name="action" />
+				</form>
+			</div>
+		</section>
+		<footer id="footer" class="content-background">
+			<div style="padding-top:10px">
+			<span class="footerText">&copy; 2017 BIG Smart Home</span>
+			</div>
+		</footer>
     </main>
-    <footer>
-        <p>&copy; 2017 Big Smart Home<p>
-    </footer>
+    
 
 </body>
 </html>
