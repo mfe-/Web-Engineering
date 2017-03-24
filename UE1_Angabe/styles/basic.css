@@ -1,18 +1,48 @@
 
 html
 {
+	height: 100%;
+	min-height: 100%;
 	font-family:Arial;
-    background: black;
 }
 body
 {
-	margin:0px;
-	width:400px;
+	height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+	background: #fb7700; 
+    background: -webkit-linear-gradient(#F0F2F5, #D4D9E8); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#F0F2F5, #D4D9E8); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#F0F2F5, #D4D9E8); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#F0F2F5, #D4D9E8); /* Standard syntax */
 }
 
-.header-height
+#header
 {
-	height:77px;
+	height: 100%;
+    background: #fb7700; 
+    background: -webkit-linear-gradient(#fb7700, #cc4800); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#fb7700, #cc4800); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#fb7700, #cc4800); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#fb7700, #cc4800); /* Standard syntax */
+
+	-webkit-box-shadow:  6px 6px 4px 6px #B7B8BA;
+  	-moz-box-shadow: 6px 6px 4px 6px #B7B8BA;
+  	box-shadow: 6px 6px 4px 6px #B7B8BA;
+}
+
+#header h1
+{
+	margin:0em;
+	font-weight:bold;
+	font-size: 2em;
+	line-height: 2em;
+	color: #333333;
+}
+#header img{
+	margin: 0.5em;
+
 }
 .fullWidth
 {
@@ -27,27 +57,19 @@ body
 	padding-left:28%;
 }
 
-.header-background
-{
-    background: #fb7700; 
-    background: -webkit-linear-gradient(#fb7700, #cc4800); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#fb7700, #cc4800); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#fb7700, #cc4800); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#fb7700, #cc4800); /* Standard syntax */
-}
-
 .roundborder
 {
 	border-radius: 4px;
 	border-style:solid;
 	width:100%;
 }
-.input-height
+input
 {
 	height:33px;
 	margin-top: 10px;
 	margin-bottom: 15px;
 	width:99%;
+	border-color: #CCCCCC;
 }
 
 .button 
@@ -60,18 +82,13 @@ body
     border-color:#003b7c;
 	border-style: solid;
     color: white;
-    padding: 10px 0px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1em;;
+    font-size: 1em;
 	margin-left:0%;
+	height: 3em;
 
-}
-#header
-{
-	padding-top:12px;
-	padding-left:14px;
 }
 
 .content-background
@@ -79,18 +96,7 @@ body
 	background-color:#f1f3f8;
 }
 
-#header-pic
-{
-	padding-right:14px;
-	float:left;
-}
 
-#header-text
-{
-	font-size:2.0em;
-	font-weight:bold;
-	margin-top:7px;
-}
 
 #content
 {
@@ -99,8 +105,12 @@ body
 }
 #footer
 {
-	min-height:40px;
-	max-height:40px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  text-align: center;
 }
 
 
