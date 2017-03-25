@@ -33,24 +33,45 @@
 	margin-bottom:20px;
 }
 
-@media screen and (max-width:400px)
+@media screen and (max-width:399px)
 {
-		.option{
+	.option{
 		display: none !important;
 	}
 	.logout{
 		display: none !important;
 	}
 }
+@media screen and (min-width:400px)
+{
+	.hamburger{
+		display: none !important;
+		padding:0;
+	}
+	hamburger::before
+	{
+		padding:0;
+	}
+}
 @media screen and (max-width:600px)
 {
-
+	/*.hamburger
+	{
+		display: none !important;
+	}*/
 }
 @media screen and (max-width:768px)
 {
-
+	/*.hamburger
+	{
+		display: none !important;
+	}*/
 }
-@media screen and (max-width:1200px)
+/*if device is bigger then 1200*/
+@media screen and (min-width:1200px)
 {
-
+	/*.hamburger
+	{
+		display: none !important;
+	}*/
 }

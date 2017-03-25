@@ -136,22 +136,9 @@ input
 }
 .widthhalf
 {
-	width: 50%;
+	min-width: 50%;
 }
 	
-@media screen and (max-width:400px)
-{	
-	.colHeader
-	{
-		padding-top: 0px;
-		float:none;
-	}
-
-	.colContent
-	{
-		clear:left;
-	}
-}
 
 @media screen and (min-width:400px)
 {
@@ -173,15 +160,28 @@ input
 		width:50%;
 	}
 }
-@media screen and (min-width:600px)
+@media screen and (max-width:400px)
+{	
+	.colHeader
+	{
+		padding-top: 0px;
+		float:none;
+	}
+
+	.colContent
+	{
+		clear:left;
+	}
+}
+@media screen and (max-width:600px)
 {
 	
 }
-@media screen and (min-width:768px)
+@media screen and (max-width:768px)
 {
 	
 }
-@media screen and (min-width:1200px)
+@media screen and (max-width:1200px)
 {
 	
 }
