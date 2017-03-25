@@ -4,6 +4,21 @@
 	.logout{
 		display:inherit;
 	}
+	a.hamburger:hover + div
+	{
+		display: block;
+		position: fixed;
+	}
+	a.hamburger:active + div
+	{
+		display: block;
+		position: fixed;
+	}
+	.hovermenue
+	{
+		display: none;
+		position: fixed;
+	}
 
 #content
 {
@@ -46,10 +61,6 @@
 {
 	.hamburger{
 		display: none !important;
-		padding:0;
-	}
-	hamburger::before
-	{
 		padding:0;
 	}
 }
