@@ -1,3 +1,10 @@
+	.option{
+		display:inherit;
+	}
+	.logout{
+		display:inherit;
+	}
+
 #content
 {
 	min-height:1980px;
@@ -24,4 +31,41 @@
 .component-margin
 {
 	margin-bottom:20px;
+}
+
+@media screen and (min-width:400px)
+{
+	.option{
+		display:none !important;
+	}
+	.logout{
+		display:none !important;
+	}
+}
+@media screen and (min-width:600px)
+{
+	.option{
+		display:block;
+	}
+	.logout{
+		display:block;
+	}
+}
+@media screen and (min-width:768px)
+{
+	.option{
+		display:block;
+	}
+	.logout{
+		display:block;
+	}
+}
+@media screen and (min-width:1200px)
+{
+	.option{
+		display:block;
+	}
+	.logout{
+		display:block;
+	}
 }
