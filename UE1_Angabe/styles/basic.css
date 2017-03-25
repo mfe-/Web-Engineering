@@ -39,6 +39,7 @@ body
 	font-size: 2em;
 	line-height: 2em;
 	color: #333333;
+	display: inline-block;
 }
 #header img{
 	float:left;
@@ -47,7 +48,6 @@ body
 #header .button
 {
 	width: auto;
-	display: right;
 	margin: 0;
 }
 #header ul li
