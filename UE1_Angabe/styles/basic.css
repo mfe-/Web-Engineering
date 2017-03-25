@@ -42,7 +42,20 @@ body
 }
 #header img{
 	margin: 0.5em;
-
+}
+#header .button
+{
+	width: auto;
+	display: right;
+	margin: 0;
+}
+#header ul li
+{
+  display: inline;
+  list-style-type: none;
+  padding-right: 1em;
+  line-height: 2em;
+  margin: 0;
 }
 .fullWidth
 {
@@ -85,10 +98,7 @@ input
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1em;
 	margin-left:0%;
-	height: 3em;
-
 }
 
 
@@ -111,8 +121,25 @@ input
 {
 	clear:left;
 }
+
+.left
+{
+	float: left;
+}
+.right
+{
+	float:right;
+}
+.clear
+{
+	clear: both;
+}
+.widthhalf
+{
+	width: 50%;
+}
 	
-@media screen and (max-width:405px)
+@media screen and (max-width:400px)
 {
 	.colHeader
 	{
@@ -126,7 +153,7 @@ input
 	}
 }
 
-@media screen and (min-width:405px)
+@media screen and (min-width:400px)
 {
 	.colHeader
 	{
@@ -146,7 +173,15 @@ input
 		width:50%;
 	}
 }
-@media screen and (min-width:1205px)
+@media screen and (min-width:600px)
+{
+	
+}
+@media screen and (min-width:768px)
+{
+	
+}
+@media screen and (min-width:1200px)
 {
 	
 }
