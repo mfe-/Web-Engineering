@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Big Smart options</title>
+	<meta charset="utf-8"/>
     <link rel="stylesheet" href="styles/basic.css">
     <link rel="stylesheet" href="styles/option.css">
 </head>
@@ -9,7 +10,7 @@
 	<main>
 		<header id="header">
 			<div class="left widthhalf">
-				<img src="images/big-logo-small.png" alt="das logo des instituts" align="left" />
+				<img src="images/big-logo-small.png" alt="das logo des instituts" />
 				<h1>BIG Smart Home</h1>
 			</div>
 			<div class="right">
@@ -17,18 +18,18 @@
 					<li><input class="button logout roundborder submitButton" type="submit" value="Abmelden" name="action" /></li>
 				</ul>
 			</div>
-			<div class="clear" />
+			<div class="clear" ></div>
 		</header>
 		<section id="content" class="fullWidth">
 			<div class="innerContent margin_leftRight">
-				<h1>Passwort &auml;ndern</h1>
+				<h2>Passwort &auml;ndern</h2>
 				<form action="overview.html" method="post">
 					<div class="row">
 						<div class="colHeader">
-							<label for="oldPassword">Altes Passwort</label> 
+							<label for="oldPassword">Altes Passwort</label>
 						</div>
 						<div class="colContent">
-							<input class="input-height roundborder" type="password" id="oldPasswort" name="oldPassword" placeholder="Altes Passwort" />		
+							<input class="input-height roundborder" type="password" id="oldPassword" name="oldPassword" placeholder="Altes Passwort" />		
 						</div>		
 					</div>
 					<div class="row">
@@ -36,7 +37,7 @@
 							<label for="newPasswort">Neues Passwort</label>
 						</div>
 						<div class="colContent">
-							<input class="input-height roundborder"  maxlength="12" type="password" id="newPasswort" name="newPasswort" placeholder="Neues Passwort" />
+							<input class="input-height roundborder" minlength="8"  maxlength="12" type="password" id="newPasswort" name="newPasswort" placeholder="Neues Passwort" />
 						</div>
 					</div>
 					<div class="row">
@@ -44,7 +45,7 @@
 							<label for="retypPasswort">Passwort wiederholen</label>
 						</div>
 						<div class="colContent">
-							<input class="input-height roundborder" type="password" id="retypPasswort" name="retypPasswort" placeholder="Neues Passwort wiederholen" />
+							<input class="input-height roundborder" id="retypPasswort" name="retypPasswort" minlength="8"  maxlength="12" type="password" placeholder="Neues Passwort wiederholen" />
 						</div>
 					</div>
 					<input class="button roundborder submitButton" type="submit" value="&Auml;nderung speichern" name="action" />
@@ -55,7 +56,5 @@
 			<span>&copy; 2017 BIG Smart Home</span>
 		</footer>
     </main>
-    
-
 </body>
 </html>
