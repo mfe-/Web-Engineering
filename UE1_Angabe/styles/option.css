@@ -1,0 +1,17 @@
+input
+{
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
+
+#header div.left
+{
+	margin-top:5px;
+}
+
+.logout
+{
+	padding-left: 15px;
+	padding-right: 15px;
+	height: 45px;
+}

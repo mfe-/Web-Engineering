@@ -20,10 +20,18 @@
 		position: fixed;
 	}
 
+	
+	
+	
 #content
 {
 	min-height:1980px;
 	max-height:1980px;
+}
+
+.halfwidth 
+{
+	width:50%;
 }
 .innerContent
 {
@@ -38,10 +46,32 @@
 {
 	height:180px;
 }
+.component-innerWidth
+{
+	width:383px;
+}
+
 .component-margin
 {
 	margin-bottom:20px;
 }
+
+.container
+{
+	float:none;
+}
+.firstcontainer
+{
+	margin-right:0px;
+}
+
+
+
+
+
+
+
+
 
 @media screen and (max-width:399px)
 {
@@ -56,6 +86,7 @@
 		padding: 0 !important;
 	}
 }
+
 @media screen and (min-width:400px)
 {
 	.hamburger{
@@ -70,8 +101,35 @@
 		display: none !important;
 	}*/
 }
-@media screen and (max-width:768px)
+@media screen and (max-width:767px)
 {
+	/*.hamburger
+	{
+		display: none !important;
+	}*/
+	#content
+	{
+		min-height:1980px;
+		max-height:1980px;
+	}
+}
+
+
+@media screen and (max-width:1199px)
+{
+	.container
+	{
+		float:none;
+	}
+	.firstcontainer
+	{
+		margin-right:0px;
+	}
+	#content
+	{
+		min-height:1778px;
+		max-height:1778px;
+	}
 	/*.hamburger
 	{
 		display: none !important;
@@ -80,6 +138,20 @@
 /*if device is bigger then 1200*/
 @media screen and (min-width:1200px)
 {
+	.container
+	{
+		float:left;
+	}
+	.firstcontainer
+	{
+		margin-right:10px;
+	}
+	
+	#content
+	{
+		min-height:980px;
+		max-height:980px;
+	}
 	/*.hamburger
 	{
 		display: none !important;

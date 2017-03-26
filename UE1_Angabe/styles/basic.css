@@ -9,13 +9,21 @@ body
 {
 	height: 100%;
     margin: 0;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-	background: #fb7700; 
-    background: -webkit-linear-gradient(#F0F2F5, #D4D9E8); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#F0F2F5, #D4D9E8); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#F0F2F5, #D4D9E8); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#F0F2F5, #D4D9E8); /* Standard syntax */
+    /* background-repeat: no-repeat;
+    background-attachment: fixed; */
+	
+    background: #f5f7fa; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#f5f7fa,#edeff6,#e5e8f2,#d3d8e8); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#f5f7fa,#edeff6,#e5e8f2,#d3d8e8); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#f5f7fa,#edeff6,#e5e8f2,#d3d8e8); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#f5f7fa,#edeff6,#e5e8f2, #d3d8e8); /* Standard syntax */
+	background-attachment: fixed; 
+	
+	/* background: #fb7700; 
+    background: -webkit-linear-gradient(#F0F2F5, #D4D9E8);  *//* For Safari 5.1 to 6.0 */
+    /* background: -o-linear-gradient(#F0F2F5, #D4D9E8);  *//* For Opera 11.1 to 12.0 */
+    /* background: -moz-linear-gradient(#F0F2F5, #D4D9E8);  *//* For Firefox 3.6 to 15 */
+    /* background: linear-gradient(#F0F2F5, #D4D9E8);  *//* Standard syntax */
 }
 
 #header
@@ -27,9 +35,9 @@ body
     background: -moz-linear-gradient(#fb7700, #cc4800); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#fb7700, #cc4800); /* Standard syntax */
 
-	-webkit-box-shadow:  6px 6px 4px 6px #B7B8BA;
-  	-moz-box-shadow: 6px 6px 4px 6px #B7B8BA;
-  	box-shadow: 6px 6px 4px 6px #B7B8BA;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #header h1
@@ -58,6 +66,12 @@ body
   line-height: 2em;
   margin: 0;
 }
+
+.submitButton
+{
+	height:47px;
+}
+
 .fullWidth
 {
 	width:100%;
@@ -83,24 +97,24 @@ input
 	margin-top: 10px;
 	margin-bottom: 15px;
 	width:99%;
-	border-color: #CCCCCC;
+	border-width: 1px solid #CCCCCC;
 }
 
 .button 
 {
-	background-color: #0066a7;
-	background: -webkit-linear-gradient(#0066a7, #003b7c); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0066a7, #003b7c); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0066a7, #003b7c); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0066a7, #003b7c); /* Standard syntax */
-    border-color:#003b7c;
-	border-style: solid;
+	background-color: #006bac;
+	background: -webkit-linear-gradient(#006bac,#005fa0,	#003d7e); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#006bac,#005fa0, #003d7e); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#006bac,#005fa0, #003d7e); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#006bac,#005fa0, #003d7e); /* Standard syntax */
+	border: 1px solid #003d7e;
     color: white;
     text-align: center;
     text-decoration: none;
     display: inline-block;
 	margin-left:0%;
 }
+
 
 
 #content
@@ -110,9 +124,6 @@ input
 }
 #footer
 {
-  right: 0;
-  bottom: 0;
-  left: 0;
   padding: 1rem;
   text-align: center;
 }
@@ -139,8 +150,27 @@ input
 {
 	min-width: 50%;
 }
-	
 
+	
+.margin_leftRight
+{
+	margin-left: 0%;
+	margin-right: 0%;
+}
+	
+@media screen and (max-width:399px)
+{	
+	.colHeader
+	{
+		padding-top: 0px;
+		float:none;
+	}
+
+	.colContent
+	{
+		clear:left;
+	}
+}
 @media screen and (min-width:400px)
 {
 	.colHeader
@@ -161,19 +191,7 @@ input
 		width:50%;
 	}
 }
-@media screen and (max-width:400px)
-{	
-	.colHeader
-	{
-		padding-top: 0px;
-		float:none;
-	}
 
-	.colContent
-	{
-		clear:left;
-	}
-}
 @media screen and (max-width:600px)
 {
 	
@@ -182,7 +200,20 @@ input
 {
 	
 }
-@media screen and (max-width:1200px)
+
+@media screen and (max-width:1199px)
 {
-	
+	.margin_leftRight
+	{
+		margin-left: 0%;
+		margin-right: 0%;
+	}
+}
+@media screen and (min-width:1200px)
+{
+	.margin_leftRight
+	{
+		margin-left: 6%;
+		margin-right: 6%;
+	}
 }
