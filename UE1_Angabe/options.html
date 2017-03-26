@@ -3,16 +3,24 @@
 <head>
     <title>Big Smart options</title>
     <link rel="stylesheet" href="styles/basic.css">
-    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/option.css">
 </head>
 <body>
 	<main>
 		<header id="header">
+			<div class="left widthhalf">
 				<img src="images/big-logo-small.png" alt="das logo des instituts" align="left" />
 				<h1>BIG Smart Home</h1>
+			</div>
+			<div class="right">
+				<ul>
+					<li><input class="button logout roundborder submitButton" type="submit" value="Abmelden" name="action" /></li>
+				</ul>
+			</div>
+			<div class="clear" />
 		</header>
 		<section id="content" class="fullWidth">
-			<div class="innerContent">
+			<div class="innerContent margin_leftRight">
 				<h1>Passwort &auml;ndern</h1>
 				<form action="overview.html" method="post">
 					<div class="row">
@@ -39,7 +47,7 @@
 							<input class="input-height roundborder" type="password" id="retypPasswort" name="retypPasswort" placeholder="Neues Passwort wiederholen" />
 						</div>
 					</div>
-					<input class="button roundborder" type="submit" value="&Auml;ndernnderung speichern" name="action" />
+					<input class="button roundborder submitButton" type="submit" value="&Auml;nderung speichern" name="action" />
 				</form>
 			</div>
 		</section>
