@@ -18,6 +18,7 @@ import { AppFooter } from "./components/app.footer";
 import { Login } from "./components/Login";
 import { Overview } from "./components/Overview";
 import { Details } from "./components/Details";
+import { UserService } from "./services/user.service";
 
 //our route config
 const appRoutes: Routes = [
@@ -48,7 +49,7 @@ const appRoutes: Routes = [
   ],
   // Declare every component in an NgModule class. 
   declarations: [AppComponent, AppHeader, AppFooter, Login, Overview, Details],
-  providers: [  ],
+  providers: [ {provide: 'IUserService', useClass: UserService} ],
   // the root component that Angular creates and inserts into the index.html host web page
   bootstrap: [AppComponent]
 })
