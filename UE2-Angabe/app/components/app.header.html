@@ -11,10 +11,10 @@
       <li class="nav-items">
         <ul>
           <li>
-            <a href="options.html" class="button" accesskey="2">Optionen</a>
+             <a [routerLink]="[ '/Options/' ]" class="button" accesskey="2">Optionen</a>
           </li>
           <li>
-            <a routeLink='/Login/' (click)="UserService.Logout()" class="button" accesskey="1">Abmelden</a>
+            <a routeLink='/Login' (click)="UserService.Logout()" class="button" accesskey="1">Abmelden</a>
           </li>
         </ul>
       </li>
