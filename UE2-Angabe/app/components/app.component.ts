@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-@Component({
-  moduleId: module.id,
-  selector: 'my-app',
-  template: '<body><h2>Hello {{name}}!</h2></body>'
-})
+@Component({  moduleId: module.id,  selector: 'my-app',  templateUrl: 'app.component.html'})
 export class AppComponent {
+  public constructor()
+  {
+
+  }
   name: string = "World";
 }
