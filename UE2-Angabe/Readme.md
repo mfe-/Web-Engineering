@@ -1,4 +1,6 @@
-Restore packages.json
+# Restore packages.json
 npm install 
-Compile (task.json)
+
+# Compile (task.json)
+
 STRG + SHIFT + B
