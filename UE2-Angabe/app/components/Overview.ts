@@ -15,8 +15,14 @@ export class Overview {
     }
 
     public DeviceList: Array<Device>;
-    public get UserService():IUserService
-    {
+    public get UserService(): IUserService {
         return this._IUserService;
+    }
+
+    public remove(device: Device): void {
+        var index = this.DeviceList.indexOf(device);
+        if (index > -1) {
+            this.DeviceList.splice(index, 1);
+        }
     }
 } 
