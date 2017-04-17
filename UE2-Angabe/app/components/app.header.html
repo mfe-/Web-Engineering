@@ -1,19 +1,20 @@
 <header aria-labelledby="bannerheadline">
-  <a routerLink='/Overview'><img class="title-image" src="../../images/big-logo-small.png" alt="BIG Smart Home logo"></a>
+  <a routerLink='/Login'><img class="title-image" src="../../images/big-logo-small.png" alt="BIG Smart Home logo" *ngIf="UserService.IsLoggedIn==false"></a>
+  <a routerLink='/Overview'><img class="title-image" src="../../images/big-logo-small.png" alt="BIG Smart Home logo" *ngIf="UserService.IsLoggedIn==true"></a>
 
   <h1 class="header-title" id="bannerheadline">
     BIG Smart Home
   </h1>
   <nav aria-labelledby="navigationheadline">
     <h2 class="accessibility" id="navigationheadline">Navigation</h2>
-    <ul class="navigation-list" *ngIf="IsLoggedIn">
+    <ul class="navigation-list" *ngIf="UserService.IsLoggedIn">
       <li class="nav-items">
         <ul>
           <li>
             <a href="options.html" class="button" accesskey="2">Optionen</a>
           </li>
           <li>
-            <a href="login.html" class="button" accesskey="1">Abmelden</a>
+            <a routeLink='/Login/' (click)="UserService.Logout()" class="button" accesskey="1">Abmelden</a>
           </li>
         </ul>
       </li>
@@ -22,5 +23,4 @@
       </li>
     </ul>
   </nav>
-
 </header>

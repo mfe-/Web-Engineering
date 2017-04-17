@@ -30,12 +30,8 @@ const appRoutes: Routes = [
   //   component: HeroListComponent,
   //   data: { title: 'Heroes List' }
   // },
-  {
-    path: '',
-    redirectTo: '/Login',
-    pathMatch: 'full'
-  },
-  { path: '**', component: Login }
+  { path: '', redirectTo: '/Login', pathMatch: 'full' },
+  { path: '**', component: Login  }
 ];
 
 // define with ngmodule a module

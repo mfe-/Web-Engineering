@@ -10,8 +10,8 @@ export class AppHeader
         this._IUserService = userservice;
         console.log(userservice);
     }
-    public get IsLoggedIn(): boolean
+    public get UserService():IUserService
     {
-        return this._IUserService.IsAuthenticated();
+        return this._IUserService;
     }
 }
