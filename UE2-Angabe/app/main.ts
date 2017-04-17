@@ -5,3 +5,5 @@ import { AppModule } from './app.module';
  * Entry point to App, must not be changed
  */
 platformBrowserDynamic().bootstrapModule(AppModule);
+
+console.log("test");
