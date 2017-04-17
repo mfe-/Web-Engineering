@@ -8,7 +8,6 @@ export class AppHeader
     public constructor(@Inject('IUserService') userservice:IUserService)
     {
         this._IUserService = userservice;
-        console.log(userservice);
     }
     public get UserService():IUserService
     {

@@ -20,6 +20,7 @@ import { Overview } from "./components/Overview";
 import { Details } from "./components/Details";
 import { UserService } from "./services/user.service";
 import { Options } from "./components/Options";
+import { DeviceService } from "./services/device.service";
 
 //our route config
 const appRoutes: Routes = [
@@ -47,16 +48,9 @@ const appRoutes: Routes = [
   ],
   // Declare every component in an NgModule class. 
   declarations: [AppComponent, AppHeader, AppFooter, Login, Overview, Details,Options],
-  providers: [ {provide: 'IUserService', useClass: UserService} ],
+  providers: [ {provide: 'IUserService', useClass: UserService}, DeviceService ],
   // the root component that Angular creates and inserts into the index.html host web page
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    // router.events.subscribe((asfd)=> {});
-    // console.log('Routes: ', JSON.stringify(router.config, undefined, 2)); 
-  }
-  protected OnRouteChanged(value: any): void {
-    console.log(value);
-  }
 }

@@ -15,7 +15,6 @@ export class UserService implements IUserService {
         this._IsAuthenticated = false;
         this._Location = location;
         this._Router = router;
-
         this._Router.events.subscribe(this.Navigation.bind(this));
     }
     protected Navigation(param: NavigationStart | NavigationEnd) {
