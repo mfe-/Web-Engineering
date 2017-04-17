@@ -29,7 +29,7 @@
   <div class="devices">
 
     <div *ngFor="let device of DeviceList" class="device-outer" attr.data-device-id="{{device.id}}">
-      <a [routerLink]="device.edit==false ? [ '/Details', device.id ] : null" class="device" title="{{device.description}}" [attr.disabled]="device.edit==true ? true : null">
+      <a [routerLink]="(device.edit==false || device.edit==undefined) ? [ '/Details', device.id ] : null" class="device" title="{{device.description}}" [attr.disabled]="device.edit==true ? true : null">
         <dl class="device-properties">
           <dt>Anzeigename</dt>
           <dd class="device-displayname">

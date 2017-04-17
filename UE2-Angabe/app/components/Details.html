@@ -25,9 +25,10 @@
       </dl>
     </div>
   </aside>
+  {{Device}}
   <main aria-labelledby="deviceheadline" class="details-container">
-    <div attr.data-device-id="19ff7d47-bd80-4a5d-adfb-bc77558facad" class="details-headline">
-      <h2 class="main-headline" id="deviceheadline">Heizkörper Badezimmer</h2>
+    <div attr.data-device-id="{{device.id}}" class="details-headline">
+      <h2 class="main-headline" id="deviceheadline">{{Device.display_name}}</h2>
     </div>
     <div class="details-holder">
 
