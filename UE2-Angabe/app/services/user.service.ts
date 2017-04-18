@@ -30,6 +30,7 @@ export class UserService implements IUserService {
     public Login(username: string, password: string): boolean {
         this._User = new User(username,password);
         this._IsAuthenticated = true;
+        this._Router.navigate(['/Overview']);
         return true;
     }
     public IsAuthenticated(): boolean {
