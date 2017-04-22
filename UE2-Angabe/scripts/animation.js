@@ -39,7 +39,7 @@ function drawBulb(id, src, min, max, current, values)
   if(values==true)
   {
      var svg = $(id).svg({loadURL:src});
-     $(svg).animate({'svgFill':'yellow'},1000);
+     $(svg).animate({'svgFill':'yellow'},1000); //maybe not correct path element will be needet
   }
 }
 
@@ -53,6 +53,20 @@ function drawCam(id, src, min, max, current, values) {
 
 function drawShutter(id, src, min, max, current, values) 
 {
-  
-  // TODO
+
+  var svg = $(id).svg({loadURL:src});
+  var tile4 = svg.getElementById('path4559-2-5');
+  var tile3 = svg.getElementById('path4559-2-6');
+  var tile2 = svg.getElementById('path4559-2');
+  if(value==0) //open
+  {
+    $(tile4).animate({'svgFill':'none'},1000);
+    $(tile3).animate({'svgFill':'none'},1000);
+    $(tile2).animate({'svgFill':'none'},1000);
+  }
+  else if(value==1) //half
+  {
+    $(tile4).animate({'svgFill':'none'},1000);
+    $(tile3).animate({'svgFill':'none'},1000);
+  }
 }
