@@ -17,11 +17,30 @@ function drawThermometer(id, src, min, max, current, values) {
    Passen Sie die Höhe des Temperaturstandes entsprechend dem aktuellen Wert an.
    Beachten Sie weiters, dass auch die Beschriftung des Thermometers (max, min Temperatur) angepasst werden soll.
    */
+   var svg = $(id).svg({loadURL:src});
+   var labelmin = svg.getElementById('tspan3817');
+   var labelmax = svg.getElementById('tspan3817-6');
+   laelmin.text(min);
+   labelmax.text(max);
+   svg.title(values+'°');
+
+   var x1 = svg.getElementById('rect69').attr('x');
+   var y1 = svg.getElementById('rect69').attr('y');
+
+   var x2 = svg.getElementById('rect59').attr('x');
+   var y2 = svg.getElementById('rect59').attr('y');
+
+   //todo animation svgY height   
 }
 
 
-function drawBulb(id, src, min, max, current, values) {
-  // TODO
+function drawBulb(id, src, min, max, current, values) 
+{
+  if(values==true)
+  {
+     var svg = $(id).svg({loadURL:src});
+     $(svg).animate({'svgFill':'yellow'},1000);
+  }
 }
 
 function drawCam(id, src, min, max, current, values) {
@@ -32,6 +51,8 @@ function drawCam(id, src, min, max, current, values) {
    */
 }
 
-function drawShutter(id, src, min, max, current, values) {
+function drawShutter(id, src, min, max, current, values) 
+{
+  
   // TODO
 }
