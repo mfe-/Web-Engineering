@@ -11,39 +11,52 @@
  Rufen Sie dazu mit draw_image(id, src, min, max, current, values) die zugrunde liegende und hier definierte Funktione auf.
  */
 
-
 function drawThermometer(id, src, min, max, current, values) {
+    console.log("Thermometer");
+    $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg(); 
+    var svg = $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg('get');
+
+    svg.load(src,{onLoad: function(svgi){
+      $('#text3819 tspan',svgi.root()).text(min);
+      $('#text3819-3 tspan',svgi.root()).text(max);
+      
+    //  svgi.text(svgi.getElementById('text3819'),min);
+     // svgi.text(svgi.getElementById('text3819-3'),max);
+    }});
+    svg.title(current+"°");
+    
+
   /* TODO
    Passen Sie die Höhe des Temperaturstandes entsprechend dem aktuellen Wert an.
    Beachten Sie weiters, dass auch die Beschriftung des Thermometers (max, min Temperatur) angepasst werden soll.
    */
-   var svg = $(id).svg({loadURL:src});
-   var labelmin = svg.getElementById('tspan3817');
-   var labelmax = svg.getElementById('tspan3817-6');
-   laelmin.text(min);
-   labelmax.text(max);
-   svg.title(values+'°');
-
-   var x1 = svg.getElementById('rect69').attr('x');
-   var y1 = svg.getElementById('rect69').attr('y');
-
-   var x2 = svg.getElementById('rect59').attr('x');
-   var y2 = svg.getElementById('rect59').attr('y');
-
-   //todo animation svgY height   
 }
 
 
 function drawBulb(id, src, min, max, current, values) 
 {
-  if(values==true)
+  console.log("BULB");
+  $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg();
+  var svg = $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg('get');
+  if(current==1) //true
   {
-     var svg = $(id).svg({loadURL:src});
-     $(svg).animate({'svgFill':'yellow'},1000); //maybe not correct path element will be needet
+    console.log("bulb is on");
+     svg.load(src,{onLoad: function(svgi){
+       svgi.configure(svgi.getElementById('bulbpath'),{fill:'orange'},false)
+    }});
+  }
+  else
+  {
+    console.log("bulb is off");
+    svg.load(src);
   }
 }
 
 function drawCam(id, src, min, max, current, values) {
+     console.log("Cam");
+     $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg();
+     var svg = $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg('get');
+     svg.load(src);
   /* TODO
     Verändern Sie die Darstellung der Webcam entsprechend den Vorgaben aus der Angabe.
     Dabei soll jedoch nicht nur einfach die Farbe der Elemente verändert werden, sondern es soll eine Kopie der zu verändernden Elemente erstellt
@@ -53,20 +66,28 @@ function drawCam(id, src, min, max, current, values) {
 
 function drawShutter(id, src, min, max, current, values) 
 {
+    console.log("Shutter");
+    $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg();
+    var svg = $("div[data-device-id="+id+"] div.device-image-container div.device-image").svg('get');
+    if(current==0) //open
+    {
 
-  var svg = $(id).svg({loadURL:src});
-  var tile4 = svg.getElementById('path4559-2-5');
-  var tile3 = svg.getElementById('path4559-2-6');
-  var tile2 = svg.getElementById('path4559-2');
-  if(value==0) //open
-  {
-    $(tile4).animate({'svgFill':'none'},1000);
-    $(tile3).animate({'svgFill':'none'},1000);
-    $(tile2).animate({'svgFill':'none'},1000);
-  }
-  else if(value==1) //half
-  {
-    $(tile4).animate({'svgFill':'none'},1000);
-    $(tile3).animate({'svgFill':'none'},1000);
-  }
+      console.log("open");
+     svg.load(src,{onLoad: function(svgi){
+        svgi.configure(svgi.getElementById('path4559-2-5'),{fill:'none'},true);
+        svgi.configure(svgi.getElementById('path4559-2-6'),{fill:'none'},true);
+        svgi.configure(svgi.getElementById('path4559-2'),{fill:'none'},true);
+        
+    }});
+    }
+    else if(current==1) //half
+    {
+      console.log("half");
+      svg.load(src,{onLoad: function(svgi){
+         svgi.configure(svgi.getElementById('path4559-2-5'),{fill:'none'},true);
+         svgi.configure(svgi.getElementById('path4559-2-6'),{fill:'none'},true);
+      }});
+    }
+    else
+        svg.load(src);
 }
