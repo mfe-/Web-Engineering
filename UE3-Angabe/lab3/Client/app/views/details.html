@@ -12,7 +12,7 @@
         <div [attr.data-device-id]="device.id" class="details-headline">
             <h2 class="main-headline" id="deviceheadline">{{device.display_name}}</h2>
         </div>
-        <div class="details-holder" *ngFor="let control_unit of device.control_units">
+        <div class="details-holder">
             <div *ngFor="let control_unit of device.control_units"  class="details-outer">
                 <continuous-details *ngIf="isContinuous(control_unit)" [device]="device" [controlUnit]="control_unit"></continuous-details>
                 <enum-details *ngIf="isEnum(control_unit)" [device]="device" [controlUnit]="control_unit"></enum-details>
