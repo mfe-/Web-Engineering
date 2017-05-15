@@ -1,16 +1,19 @@
-import {Device} from '../model/device';
-import {Injectable} from '@angular/core';
+import { Device } from '../model/device';
+import { Injectable } from '@angular/core';
 
-import {DEVICES} from '../resources/mock-device';
-import {DeviceParserService} from './device-parser.service';
+import { DEVICES } from '../resources/mock-device';
+import { DeviceParserService } from './device-parser.service';
 
 import 'rxjs/add/operator/toPromise';
+import { Http } from "@angular/http";
 
 
 @Injectable()
 export class DeviceService {
 
-    constructor(private parserService: DeviceParserService) {
+    private BaseUri = "http://localhost:8081/";
+
+    constructor(private parserService: DeviceParserService, private httpService: Http) {
     }
 
     //TODO Sie können dieses Service benutzen, um alle REST-Funktionen für die Smart-Devices zu implementieren
@@ -21,12 +24,20 @@ export class DeviceService {
          * Verwenden Sie das DeviceParserService um die via REST ausgelesenen Geräte umzuwandeln.
          * Das Service ist dabei bereits vollständig implementiert und kann wie unten demonstriert eingesetzt werden.
          */
-        return Promise.resolve(DEVICES).then(devices => {
-            for (let i = 0; i < devices.length; i++) {
-                devices[i] = this.parserService.parseDevice(devices[i]);
-            }
-            return devices;
-        });
+        return this.httpService.get(this.BaseUri + "devices/").toPromise().then(
+            (response) => {
+                var devices = response.json() as Device[];
+                for (let i = 0; i < devices.length; i++) {
+                    devices[i] = this.parserService.parseDevice(devices[i]);
+                }
+                return devices;
+            });
+        // Promise.resolve(DEVICES).then(devices => {
+        //     for (let i = 0; i < devices.length; i++) {
+        //         devices[i] = this.parserService.parseDevice(devices[i]);
+        //     }
+        //     return devices;
+        // });
     }
 
     getDevice(id: string): Promise<Device> {
