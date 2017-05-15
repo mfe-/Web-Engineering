@@ -1,7 +1,8 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef, Inject } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {OptionsComponent} from "./options.component";
 import {LoginComponent} from "./login.component";
+import { IUserService } from "../contracts/IUserService";
 
 @Component({
   moduleId: module.id,
@@ -11,7 +12,7 @@ import {LoginComponent} from "./login.component";
 export class NavigationComponent {
 
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute,  @Inject('IUserService') private userservice:IUserService) {
   };
 
   isOptionsShown(): boolean {

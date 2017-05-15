@@ -44,5 +44,16 @@ export class DeviceService {
         return this.getDevices()
             .then(devices => devices.find(device => device.id === id));
     }
+    createDevice(device: Device): Promise<Device> {
+        device.id = "-1";
+        return this.httpService.post(this.BaseUri + "devices/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
+    }
+    updateDevice(device: Device): Promise<Device> {
+        return this.httpService.put(this.BaseUri + "devices/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
+    }
+    deleteDevice(device: Device): void {
+        this.httpService.delete(this.BaseUri + "devices/" + device.id, device)
+    }
+
 
 }
