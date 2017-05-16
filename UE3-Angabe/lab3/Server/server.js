@@ -35,6 +35,9 @@ app.use(cors());
  *      Bei der Anlage neuer Geräte wird eine neue ID benötigt. Verwenden Sie dafür eine uuid (https://www.npmjs.com/package/uuid, Bibliothek ist bereits eingebunden).
  */
 
+//TODO: cookies, mehrere user in config möglich->nein nur einer reicht, was ist mit unterem todo gemeint?,
+// im client heißt es lesen sie aus SessionStorage aus. da steht gar nichts drin? put methode resultiert in 404
+
 app.post("/updateCurrent", function (req, res) {
     "use strict";
     //TODO Vervollständigen Sie diese Funktion, welche den aktuellen Wert eines Gerätes ändern soll
@@ -43,24 +46,53 @@ app.post("/updateCurrent", function (req, res) {
      *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
      * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
      */
+
+    //device value -> in device details ändern
 });
 // Create -> Post
 // Read   -> Get
 // Update -> Put
 // Delete -> Delete
 
-app.get('/user/:id', function (req, res, next) {
-    console.log('get Parameter:', req.params.id);
-    res.send(200, app.users);
-    next();
+app.post('/login/', function (req, res, next) {
+    console.log('login get Parameter:', req.body);
+    if (req.body.username !== undefined && req.body.password !== undefined) {
+        if (app.users.username == req.body.username && app.users.password == req.body.password) {
+            console.log(true);
+            //expires in 1h
+            var token = jwt.sign({ data: req.body }, 'secret', { expiresIn: 60 * 60 });
+            console.log(token);
+            // var decoded = jwt.verify(token, 'secret');
+            // console.log(decoded);
+            res.cookie('token', token);
+            res.status(200).send(Object.assign(req.body, { token: token }));
+
+        }
+        else {
+            res.status(401).send();
+        }
+    }
+    else {
+
+        app.failedLogin += 1;
+        res.status(401).send();
+    }
 });
+/**
+ * Server Status
+ */
 app.get('/status/', function (req, res, next) {
+    console.log(req.headers);
     res.status(200).send({ start: app.start, failedLogins: app.failedLogin });
 });
+/**
+ * Update Password
+ */
 app.put('/updatePassword/', function (req, res, next) {
     console.log("todo update password");
 });
 app.get('/devices/:id*?', function (req, res, next) { //*? - optionaler param
+    console.log(req.headers);
     console.log('get Parameter:', req.params.id);
 
     if (req.params.id) {
@@ -76,7 +108,6 @@ app.get('/devices/:id*?', function (req, res, next) { //*? - optionaler param
         res.status(200).send(app.devices);
     }
 
-    next();
 });
 
 app.post('/device/:id*?', function (req, res, next) {
@@ -89,12 +120,13 @@ app.post('/device/:id*?', function (req, res, next) {
     }
     else {
         // Bad Request
-        res.status(400);
+        res.status(400).send();
     }
-    next();
+
 });
 app.delete('/device/:id', function (req, res, next) {
-    if (req.body.id) {
+    console.log("app.delete");
+    if (req.params.id) {
         console.log('delete Parameter:', req.params.id);
         var d = null;
         app.devices.forEach(function (element) {
@@ -104,7 +136,7 @@ app.delete('/device/:id', function (req, res, next) {
         }, this);
         console.log('Found device:', d);
         if (d == null) {
-            res.status(400);
+            res.status(400).send();
         }
         else {
             // console.log(app.devices.length);
@@ -114,7 +146,7 @@ app.delete('/device/:id', function (req, res, next) {
                 console.log('removed device:', d);
                 // console.log(app.devices.length);
                 //reset content
-                res.status(205);
+                res.status(205).send();
             }
         }
 
@@ -123,32 +155,34 @@ app.delete('/device/:id', function (req, res, next) {
         // Bad Request
         res.status(400);
     }
-    next();
+
 });
 app.put('/device/:id*?', function (req, res, next) {
     if (req.body.id) {
-        console.log('put Parameter:', req.body.id);
+        console.log('put Parameter:', req.params.id);
         var d = null;
         app.devices.forEach(function (element) {
-            if (element.id == req.body.id) {
+            if (element.id == req.params.id) {
                 d = element;
             }
         }, this);
-
+        console.log(d);
         if (d != null) {
             var index = app.devices.indexOf(d);
             if (index !== -1) {
                 app.devices[index] = req.body;
-                res.status(205);
-                next();
+                res.status(205).send(d);
             }
         }
-        res.status(500);
+        else {
+            res.status(500).send();
+        }
+
     }
     else {
-        res.status(400);
+        res.status(400).send();
     }
-    next();
+
 });
 
 
@@ -201,8 +235,9 @@ function refreshConnected() {
      *
      * Bitte beachten Sie, dass diese Funktion von der Simulation genutzt wird um periodisch die simulierten Daten an alle Clients zu übertragen.
      */
-}
 
+
+}
 
 var server = app.listen(8081, function () {
     "use strict";

@@ -4,6 +4,10 @@ import {ControlType} from "./controlType";
  * Definition für die Steuerungselemente eines Gerätes
  */
 export class ControlUnit {
+  public constructor()
+  {
+    this.values = [null];
+  }
   /**
    * Name des Steuerungselements
    */

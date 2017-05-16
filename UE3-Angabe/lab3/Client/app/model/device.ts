@@ -4,6 +4,10 @@ import {ControlUnit} from './controlUnit'
  * Definition eines Gerätes zur Repräsentation eines existierenden Smart Devices
  */
 export class Device {
+  public constructor()
+  {
+    this.control_units = [null];
+  }
   /**
    * Eindeutiger Identifkator für dieses Gerät
    */

@@ -1,30 +1,37 @@
 export class User {
-    protected _UserName: string;
-    protected _Password: string;
+    protected username: string;
+    protected password: string;
     protected _Date: Date;
+    protected token: string;
 
     constructor(username: string, password: string) {
-        this._UserName = username;
-        this._Password = password;
+        this.username = username;
+        this.password = password;
         this._Date = new Date();
     }
 
     public get UserName(): string {
-        return this._UserName;
+        return this.username;
     }
     public set UserName(value: string) {
-        this._UserName = value;
+        this.username = value;
     }
 
     public get Password(): string {
-        return this._Password;
+        return this.password;
     }
     public set Password(value: string) {
-        this._Password = value;
+        this.password = value;
     }
 
     public get Date(): Date {
         return this._Date;
+    }
+    public get Token(): string {
+        return this.token;
+    }
+    public set Token(value: string) {
+        this.token = value;
     }
 
 }

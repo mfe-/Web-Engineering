@@ -12,6 +12,7 @@ import { Http } from "@angular/http";
 export class DeviceService {
 
     private BaseUri = "http://localhost:8081/";
+    public DeviceList = new Array();
 
     constructor(private parserService: DeviceParserService, private httpService: Http) {
     }
@@ -30,6 +31,7 @@ export class DeviceService {
                 for (let i = 0; i < devices.length; i++) {
                     devices[i] = this.parserService.parseDevice(devices[i]);
                 }
+                this.DeviceList = devices;
                 return devices;
             });
         // Promise.resolve(DEVICES).then(devices => {
@@ -46,13 +48,21 @@ export class DeviceService {
     }
     createDevice(device: Device): Promise<Device> {
         device.id = "-1";
-        return this.httpService.post(this.BaseUri + "devices/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
+        this.DeviceList.push(device);
+        return this.httpService.post(this.BaseUri + "device/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
     }
     updateDevice(device: Device): Promise<Device> {
-        return this.httpService.put(this.BaseUri + "devices/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
+        return this.httpService.put(this.BaseUri + "device/" + device.id, device).toPromise().then(
+            bla => this.parserService.parseDevice(bla.json() as Device)
+        );
     }
     deleteDevice(device: Device): void {
-        this.httpService.delete(this.BaseUri + "devices/" + device.id, device)
+        this.httpService.delete(this.BaseUri + "device/" + device.id, device).toPromise();
+        var index = this.DeviceList.indexOf(device);
+        if (index > -1) {
+            this.DeviceList.splice(index, 1);
+        }
+
     }
 
 

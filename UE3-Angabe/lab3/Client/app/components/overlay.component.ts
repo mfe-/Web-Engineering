@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {OverviewComponent} from "./overview.component";
-import {DeviceService} from "../services/device.service";
-import {Device} from "../model/device";
-import {ControlUnit} from "../model/controlUnit";
-import {ControlType} from "../model/controlType";
+import { Component, Input, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { OverviewComponent } from "./overview.component";
+import { DeviceService } from "../services/device.service";
+import { Device } from "../model/device";
+import { ControlUnit } from "../model/controlUnit";
+import { ControlType } from "../model/controlType";
 
 @Component({
   moduleId: module.id,
@@ -46,6 +46,24 @@ export class OverlayComponent implements OnInit {
    * @param form
    */
   onSubmit(form: NgForm): void {
+
+    var d = new Device();
+    //Object {displayname: FormControl, type-input: FormControl, typename: FormControl, elementname: FormControl, elementtype-input: FormControl}
+    d.display_name = form.controls["displayname"].value;
+    var controlUnit = new ControlUnit();
+    //gerätetyp
+    var devicetype = form.controls["type-input"].value
+    controlUnit.name = "";
+    controlUnit.current = 0;
+    controlUnit.type = 2;
+    controlUnit.primary = false;
+    controlUnit.values = [""];
+    controlUnit.min = 0;
+    controlUnit.max = 0;
+    d.id = "-1";
+    d.control_units = [controlUnit];
+    this.deviceService.createDevice(d);
+
     form.reset();
     this.overviewComponent.closeAddDeviceWindow();
 

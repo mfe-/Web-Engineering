@@ -124,6 +124,7 @@ export class DevicesComponent implements OnInit, AfterViewChecked {
     finishEdit(device: Device): void {
         this.showLabel(device);
         //TODO Lesen Sie den geänderten Anzeigenamen aus und speichern Sie diesen über die REST-Schnittstelle
+        this.deviceService.updateDevice(device);
     }
 
     /**
@@ -132,6 +133,7 @@ export class DevicesComponent implements OnInit, AfterViewChecked {
      */
     removeDevice(device: Device): void {
         //TODO Löschen Sie das angegebene Geräte über die REST-Schnittstelle
+        this.deviceService.deleteDevice(device);
     }
 
     /**
