@@ -48,8 +48,14 @@ export class DeviceService {
     }
     createDevice(device: Device): Promise<Device> {
         device.id = "-1";
-        this.DeviceList.push(device);
-        return this.httpService.post(this.BaseUri + "device/" + device.id, device).toPromise().then(bla => this.parserService.parseDevice(bla.json() as Device));
+        device= this.parserService.parseDevice(device);
+        return this.httpService.post(this.BaseUri + "device/" + device.id, device).toPromise().then(
+            (bla) => {
+                var d = this.parserService.parseDevice(bla.json() as Device);
+                device.id = d.id;
+                return d;
+            }
+        );
     }
     updateDevice(device: Device): Promise<Device> {
         return this.httpService.put(this.BaseUri + "device/" + device.id, device).toPromise().then(

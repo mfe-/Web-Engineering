@@ -171,10 +171,11 @@ app.put('/device/:id*?', function (req, res, next) {
             var index = app.devices.indexOf(d);
             if (index !== -1) {
                 app.devices[index] = req.body;
-                res.status(205).send(d);
+                res.status(200).send(d);
             }
         }
         else {
+            console.log("put: device with id "+  req.params.id+" not found");
             res.status(500).send();
         }
 

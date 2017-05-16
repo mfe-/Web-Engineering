@@ -46,28 +46,70 @@ export class OverlayComponent implements OnInit {
    * @param form
    */
   onSubmit(form: NgForm): void {
+    if (form.valid) {
+      var d = new Device();
+      //Object {displayname: FormControl, type-input: FormControl, typename: FormControl, elementname: FormControl, elementtype-input: FormControl}
+      //Anzeigename
+      d.display_name = form.controls["displayname"].value;
+      //Gerätetyp
+      d.type = form.controls["type-input"].value;
+      //Gerätenamen
+      d.type_name = form.controls["typename"].value;
+      d.id = "-1";
 
-    var d = new Device();
-    //Object {displayname: FormControl, type-input: FormControl, typename: FormControl, elementname: FormControl, elementtype-input: FormControl}
-    d.display_name = form.controls["displayname"].value;
-    var controlUnit = new ControlUnit();
-    //gerätetyp
-    var devicetype = form.controls["type-input"].value
-    controlUnit.name = "";
-    controlUnit.current = 0;
-    controlUnit.type = 2;
-    controlUnit.primary = false;
-    controlUnit.values = [""];
-    controlUnit.min = 0;
-    controlUnit.max = 0;
-    d.id = "-1";
-    d.control_units = [controlUnit];
-    this.deviceService.createDevice(d);
+      if (d.type == "Webcam") {
+        d.image = "images/webcam.svg";
+        d.image_alt = "Webcam als Indikator für Aktivierung";
+      }
+      else if (d.type == "Rollladen") {
+        d.image = "images/roller_shutter.svg";
+        d.image_alt = "Rollladenbild als Indikator für Öffnungszustand";
+      }
+      else if (d.type == "Beleuchtung") {
+        d.image = "images/bulb.svg";
+        d.image_alt = "Glühbirne als Indikator für Aktivierung";
+      }
+      else if (d.type == "Heizkörperthermostat") {
+        d.image = "images/thermometer.svg";
+        d.image_alt = "Thermometer zur Temperaturanzeige";
+      }
 
-    form.reset();
-    this.overviewComponent.closeAddDeviceWindow();
+      var controlUnit = new ControlUnit();
+      //gerätetyp
+      controlUnit.name = form.controls["elementname"].value;
+      controlUnit.current = 0;
+      if (form.controls["elementtype-input"].value == "Diskrete Werte") {
+        controlUnit.type = ControlType.enum;
+        controlUnit.values = [
+          "offen",
+          "halb geöffnet",
+          "geschlossen"
+        ];
+        controlUnit.current = 1;
+        controlUnit.primary = true;
+      }
+      else if (form.controls["elementtype-input"].value == "Ein/Auschalter") {
+        controlUnit.type = ControlType.boolean;
+        controlUnit.primary = true;
+        controlUnit.current = 0;
+      }
+      else if (form.controls["elementtype-input"].value == "Kontinuierlicher Wert") {
+        controlUnit.type = ControlType.continuous;
+        controlUnit.min = 0;
+        controlUnit.max = 0;
+        controlUnit.current = 1;
+        controlUnit.primary = true;
+      }
 
-    //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
+      d.control_units = [controlUnit];
+      this.deviceService.createDevice(d);
+
+      form.reset();
+      this.overviewComponent.closeAddDeviceWindow();
+
+      //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
+    }
+
 
   }
 

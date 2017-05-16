@@ -1,6 +1,6 @@
 <div class="devices">
 
-  <div *ngFor="let device of devices" class="device-outer" [attr.data-device-id]="device.id">
+  <div *ngFor="let device of devices" ngModelChange="" class="device-outer" [attr.data-device-id]="device.id">
     <a class="device" [routerLink]="isEdited(device) ? null : ['/details', device.id]"
        [attr.title]="device.description">
       <dl class="device-properties">
