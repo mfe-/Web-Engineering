@@ -95,26 +95,24 @@ app.post("/updateCurrent", function (req, res) {
 app.post('/login/', function (req, res, next) {
     console.log('login get Parameter:', req.body);
     if (req.body.username !== undefined && req.body.password !== undefined) {
+        // console.log(req.body.password); console.log(app.users.password);
+        // console.log(app.users.password == app.users.password);
         if (app.users.username == req.body.username && app.users.password == req.body.password) {
-            console.log(true);
+
             //expires in 1h
             var token = jwt.sign({ data: req.body }, 'secret', { expiresIn: 60 * 60 });
+            app.tokens.push(token);
             console.log(token);
             // var decoded = jwt.verify(token, 'secret');
             // console.log(decoded);
-            res.cookie('token', token);
+            res.cookie('token', token); //bringt bei ajax calls nix
             res.status(200).send(Object.assign(req.body, { token: token }));
 
         }
-        else {
-            res.status(401).send();
-        }
     }
-    else {
+    app.failedLogin += 1;
+    res.status(401).send();
 
-        app.failedLogin += 1;
-        res.status(401).send();
-    }
 });
 /**
  * Server Status
@@ -128,116 +126,128 @@ app.get('/status/', function (req, res, next) {
  */
 app.put('/updatePassword/', function (req, res, next) {
     console.log("updatePassword");
-    if (req.body.oldpassword !== undefined && req.body.newpassword) {
-        console.log(req.body);
-        if (app.users.password != req.body.oldpassword) {
-            res.status(403).send();
-        }
-        else {
-            //write new pw into our config
-            fs.writeFile("resources/login.config", "username:admin@mail.com\npassword:"+req.body.newpassword, function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-                app.users.password=req.body.newpassword;
-                console.log("The file was saved!");
-                res.status(200).send();
-            });
+    if (checkToken(res, req.headers.token)) {
+        if (req.body.oldpassword !== undefined && req.body.newpassword) {
+            console.log(req.body);
+            if (app.users.password != req.body.oldpassword) {
+                res.status(403).send();
+            }
+            else {
+                //write new pw into our config
+                fs.writeFile("resources/login.config", "username:admin@mail.com\npassword:" + req.body.newpassword, function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    app.users.password = req.body.newpassword;
+                    console.log("The file was saved!");
+                    res.status(200).send();
+                });
+            }
         }
     }
+
 
 });
 app.get('/devices/:id*?', function (req, res, next) { //*? - optionaler param
-    console.log(req.headers);
-    console.log('get Parameter:', req.params.id);
 
-    if (req.params.id) {
-        var d = null;
-        app.devices.forEach(function (element) {
-            if (element.id == req.params.id) {
-                d = element;
-            }
-        }, this);
-        res.status(200).send(d);
+    console.log('get Parameter:', req.params.id);
+    if (checkToken(res, req.headers.token)) {
+        if (req.params.id) {
+            var d = null;
+            app.devices.forEach(function (element) {
+                if (element.id == req.params.id) {
+                    d = element;
+                }
+            }, this);
+            res.status(200).send(d);
+        }
+        else {
+            res.status(200).send(app.devices);
+        }
     }
-    else {
-        res.status(200).send(app.devices);
-    }
+
 
 });
 
 app.post('/device/:id*?', function (req, res, next) {
-    //use xxx-url-encoded in postman
-    console.log('post Parameter:', req.body.id);
-    if (req.body.id) {
-        req.body.id = uuid.v1();
-        app.devices.push(req.body);
-        res.status(201).send(req.body);
-    }
-    else {
-        // Bad Request
-        res.status(400).send();
+
+    if (checkToken(res, req.headers.token)) {
+        //use xxx-url-encoded in postman
+        console.log('post Parameter:', req.body.id);
+        if (req.body.id) {
+            req.body.id = uuid.v1();
+            app.devices.push(req.body);
+            res.status(201).send(req.body);
+        }
+        else {
+            // Bad Request
+            res.status(400).send();
+        }
     }
 
 });
 app.delete('/device/:id', function (req, res, next) {
     console.log("app.delete");
-    if (req.params.id) {
-        console.log('delete Parameter:', req.params.id);
-        var d = null;
-        app.devices.forEach(function (element) {
-            if (element.id == req.params.id) {
-                d = element;
+    if (checkToken(res, req.headers.token)) {
+        if (req.params.id) {
+            console.log('delete Parameter:', req.params.id);
+            var d = null;
+            app.devices.forEach(function (element) {
+                if (element.id == req.params.id) {
+                    d = element;
+                }
+            }, this);
+            console.log('Found device:', d);
+            if (d == null) {
+                res.status(400).send();
             }
-        }, this);
-        console.log('Found device:', d);
-        if (d == null) {
-            res.status(400).send();
+            else {
+                // console.log(app.devices.length);
+                var index = app.devices.indexOf(d);
+                if (index > -1) {
+                    app.devices.splice(index, 1);
+                    console.log('removed device:', d);
+                    // console.log(app.devices.length);
+                    //reset content
+                    res.status(205).send();
+                }
+            }
+
         }
         else {
-            // console.log(app.devices.length);
-            var index = app.devices.indexOf(d);
-            if (index > -1) {
-                app.devices.splice(index, 1);
-                console.log('removed device:', d);
-                // console.log(app.devices.length);
-                //reset content
-                res.status(205).send();
-            }
+            // Bad Request
+            res.status(400);
         }
-
-    }
-    else {
-        // Bad Request
-        res.status(400);
     }
 
 });
 app.put('/device/:id*?', function (req, res, next) {
-    if (req.body.id) {
-        console.log('put Parameter:', req.params.id);
-        var d = null;
-        app.devices.forEach(function (element) {
-            if (element.id == req.params.id) {
-                d = element;
+    if (checkToken(res, req.headers.token)) {
+        if (req.body.id) {
+            console.log('put Parameter:', req.params.id);
+            var d = null;
+            app.devices.forEach(function (element) {
+                if (element.id == req.params.id) {
+                    d = element;
+                }
+            }, this);
+            console.log(d);
+            if (d != null) {
+                var index = app.devices.indexOf(d);
+                if (index !== -1) {
+                    app.devices[index] = req.body;
+                    res.status(200).send(d);
+                }
             }
-        }, this);
-        console.log(d);
-        if (d != null) {
-            var index = app.devices.indexOf(d);
-            if (index !== -1) {
-                app.devices[index] = req.body;
-                res.status(200).send(d);
+            else {
+                console.log("put: device with id " + req.params.id + " not found");
+                res.status(500).send();
             }
+
         }
         else {
-            console.log("put: device with id " + req.params.id + " not found");
-            res.status(500).send();
+            res.status(400).send();
         }
-
-    }
-    else {
-        res.status(400).send();
     }
 
 });
@@ -277,9 +287,11 @@ function readDevices() {
         }
         data = JSON.parse(data);
         app.devices = data.devices;
-        console.log("devices", app.devices);
+        // console.log("devices", app.devices);
     });
 }
+
+
 
 
 function refreshConnected() {
@@ -293,6 +305,46 @@ function refreshConnected() {
      * Bitte beachten Sie, dass diese Funktion von der Simulation genutzt wird um periodisch die simulierten Daten an alle Clients zu übertragen.
      */
 
+
+}
+app.get('/logout/:token*', function (req, res, next) { //*? - optionaler param
+
+    console.log('get logout:', req.params.token);
+    if (checkToken(res, req.headers.token)) {
+        if (req.params.token) {
+           index = app.tokens.indexOf(req.params.token);
+           if (index > -1) {
+                    app.tokens.splice(index, 1);
+                    console.log('removed token:', req.params.token);
+                    res.status(205).send();
+                }
+        }
+        else {
+            res.status(500).send();
+        }
+    }
+
+
+});
+
+function checkToken(res, token) {
+
+    if (token != null && token != undefined) {
+        var d = null;
+        app.tokens.forEach(function (element) {
+            if (element == token) {
+                d = true;
+            }
+        }, this);
+        if (d != null) {
+            var decoded = jwt.verify(token, 'secret');
+            //normaly we would also check the payload....
+            console.log("checkToken" + decoded);
+            return true;
+        }
+    }
+
+    res.status(401).send();
 
 }
 

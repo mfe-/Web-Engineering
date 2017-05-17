@@ -1,10 +1,11 @@
-import { Injectable, NgZone } from "@angular/core";
+import { Injectable, NgZone, Inject } from "@angular/core";
 import { IUserService } from "../contracts/IUserService";
-import { Router, NavigationStart, NavigationEnd } from "@angular/router";
+import { Router, NavigationStart, NavigationEnd, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { User } from "../model/user";
-import { Http } from "@angular/http";
+import { Http, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
+import { MyRequestOptions } from "./MyRequestOptions";
 
 @Injectable()
 export class UserService implements IUserService {
@@ -15,24 +16,30 @@ export class UserService implements IUserService {
     protected _httpService: Http;
     public _ErrorOnLogin: boolean = true;
 
-    public constructor(location: Location, router: Router, httpService: Http) {
+    public constructor(location: Location, router: Router, httpService: Http, @Inject(RequestOptions) private myRequestOptions: MyRequestOptions) {
         this._IsAuthenticated = false;
         this._ErrorOnLogin = false;
         this._Location = location;
         this._Router = router;
         this._httpService = httpService;
-        this._Router.events.subscribe(this.Navigation.bind(this));
-    }
-    protected Navigation(param: NavigationStart | NavigationEnd) {
-        //check whether the user is logged in or not
-        if (param.constructor.name != "NavigationStart") {
-            if (param.url.toLocaleLowerCase().indexOf("login") !== 1) {
-                if (this.IsAuthenticated() == false) {
-                    this._Router.navigate(["/Login"], {});
-                }
-            }
+        var jsonuser = window.localStorage.getItem("user");
+        if (jsonuser != null) {
+            this._User = JSON.parse(jsonuser);
+            this.setUser(this._User);
         }
+
+        // this._Router.events.subscribe(this.Navigation.bind(this));
     }
+    // protected Navigation(param: NavigationStart | NavigationEnd) {
+    //     //check whether the user is logged in or not
+    //     if (param.constructor.name != "NavigationStart") {
+    //         if (param.url.toLocaleLowerCase().indexOf("login") !== 1) {
+    //             if (this.IsAuthenticated() == false) {
+    //                 this._Router.navigate(["/Login"], {});
+    //             }
+    //         }
+    //     }
+    // }
     public Login(username: string, password: string): boolean {
         this._User = new User(username, password);
 
@@ -45,21 +52,34 @@ export class UserService implements IUserService {
         var data: Object = Object.assign({ user: this._User }, { newpassword: newpassword, oldpassword: oldpassword });
         return this._httpService.put("http://localhost:8081/updatePassword/", data);
     }
-
+    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        return this.IsAuthenticated();
+    }
     public Logout(): void {
+        this._httpService.get("http://localhost:8081/logout/"+this._User.Token).toPromise();
         this._IsAuthenticated = false;
-        this._Router.navigate(["/Login"], {});
+        window.localStorage.clear();
+        this._User = null;
+        this._Router.navigate(["/login"]);
     }
 
     public setUser(response: any) {
-        var data = response.json();
+        var data = response;
+        if (!response.hasOwnProperty("password")) {
+            data = response.json();
+        }
+
         this._User.UserName = data.username;
         this._User.Password = data.password;
         this._User.Token = data.token;
+        this.myRequestOptions.getHeaders().delete("token");
+        this.myRequestOptions.getHeaders().append("token", data.token);
+        // this.myRequestOptions.withCredentials = true; 
 
         this._IsAuthenticated = true;
-        this._Router.navigate(['/overview']);
         this._ErrorOnLogin = false;
+        window.localStorage.setItem("user", JSON.stringify(this._User));
+        this._Router.navigate(['/overview']);
         return true
     }
     public IsAuthenticated(): boolean {

@@ -34,8 +34,8 @@ export class NavigationComponent {
   }
 
   doLogout(): void {
+    this.userservice.Logout();
     //TODO Loggen Sie den Benutzer über die REST-Schnittstelle aus
-    this.router.navigate(["/login"]);
   }
 
 }

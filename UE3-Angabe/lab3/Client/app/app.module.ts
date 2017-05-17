@@ -1,7 +1,7 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, RequestOptions } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { ChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
@@ -21,6 +21,7 @@ import { EnumDeviceDetailsComponent } from "./components/enum-device-details.com
 import { BooleanDeviceDetailsComponent } from "./components/boolean-device-details.component";
 import { OverlayComponent } from "./components/overlay.component";
 import { UserService } from "./services/user.service";
+import { MyRequestOptions } from "./services/MyRequestOptions";
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { UserService } from "./services/user.service";
   providers: [
     { provide: LOCALE_ID, useValue: "de-at" },
     { provide: 'IUserService', useClass: UserService },
+    { provide: RequestOptions, useClass: MyRequestOptions },
     DatePipe,
     DeviceService,
     DeviceParserService,

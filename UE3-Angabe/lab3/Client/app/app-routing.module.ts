@@ -10,9 +10,9 @@ import {DeviceDetailsComponent} from "./components/device-details.component";
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'overview', component: OverviewComponent},
-  {path: 'options', component: OptionsComponent},
-  {path: 'details/:id', component: DeviceDetailsComponent},
+  {path: 'overview', component: OverviewComponent,canActivate: ['IUserService']},
+  {path: 'options', component: OptionsComponent,canActivate: ['IUserService']},
+  {path: 'details/:id', component: DeviceDetailsComponent,canActivate: ['IUserService']},
   {path: '**', redirectTo: '/login', pathMatch: 'full'},
 ];
 
