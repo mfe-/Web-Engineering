@@ -7,6 +7,7 @@ import { DeviceParserService } from './device-parser.service';
 import 'rxjs/add/operator/toPromise';
 import { Http } from "@angular/http";
 import { ControlUnit } from "../model/controlUnit";
+import { Broadcaster } from "../model/broadcaster";
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class DeviceService {
     private BaseUri = "http://localhost:8081/";
     public DeviceList = new Array();
 
-    constructor(private parserService: DeviceParserService, private httpService: Http) {
+    constructor(private parserService: DeviceParserService, private httpService: Http,private broadcaster: Broadcaster) {
     }
 
     //TODO Sie können dieses Service benutzen, um alle REST-Funktionen für die Smart-Devices zu implementieren
@@ -54,6 +55,7 @@ export class DeviceService {
             (bla) => {
                 var d = this.parserService.parseDevice(bla.json() as Device);
                 device.id = d.id;
+                this.broadcaster.broadcast('MyEvent', device);
                 return d;
             }
         );

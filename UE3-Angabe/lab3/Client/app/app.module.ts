@@ -22,6 +22,7 @@ import { BooleanDeviceDetailsComponent } from "./components/boolean-device-detai
 import { OverlayComponent } from "./components/overlay.component";
 import { UserService } from "./services/user.service";
 import { MyRequestOptions } from "./services/MyRequestOptions";
+import { Broadcaster } from "./model/broadcaster";
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { MyRequestOptions } from "./services/MyRequestOptions";
     OverlayComponent,
   ],
   providers: [
+    Broadcaster,
     { provide: LOCALE_ID, useValue: "de-at" },
     { provide: 'IUserService', useClass: UserService },
     { provide: RequestOptions, useClass: MyRequestOptions },

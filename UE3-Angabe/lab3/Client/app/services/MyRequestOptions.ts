@@ -6,7 +6,7 @@ export class MyRequestOptions extends BaseRequestOptions {
   public constructor() {
     super();
   }
-  public getHeaders(): Headers {
+  public getHeaders(): /*Headers*/ any {
     return this.headers;
   }
 

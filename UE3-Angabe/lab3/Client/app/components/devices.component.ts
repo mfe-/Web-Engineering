@@ -1,6 +1,7 @@
-import {Component, OnInit, AfterViewChecked} from '@angular/core';
-import {DeviceService} from "../services/device.service";
-import {Device} from "../model/device";
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { DeviceService } from "../services/device.service";
+import { Device } from "../model/device";
+import { Broadcaster } from "../model/broadcaster";
 
 declare var $: any;
 
@@ -17,17 +18,22 @@ export class DevicesComponent implements OnInit, AfterViewChecked {
 
     device_num: number = 0;
 
-    constructor(private deviceService: DeviceService) {
+    constructor(private deviceService: DeviceService, private broadcaster: Broadcaster) {
+        this.broadcaster.on<string>('MyEvent').subscribe((message) => {
+            this.update = false;
+            this.listDevices();
+        });
     }
 
     ngOnInit(): void {
         this.update = true;
         this.listDevices();
     }
-
-
-    ngAfterViewChecked(): void {
-
+    private OnInit() {
+        this.update = true;
+        this.listDevices();
+    }
+    public draw() {
         if (this.devices != null && this.device_num != this.devices.length && this.device_num < this.devices.length) {
             this.update = true;
             this.device_num = this.devices.length
@@ -54,6 +60,11 @@ export class DevicesComponent implements OnInit, AfterViewChecked {
         }
     }
 
+    ngAfterViewChecked(): void {
+
+        this.draw();
+    }
+
 
     /**
      * Liest alle Geräte aus und initialisiert ein Flag zum Editierungs-Status dieses Gerätes
@@ -63,7 +74,7 @@ export class DevicesComponent implements OnInit, AfterViewChecked {
             this.devices = devices;
             this.edit = new Array(this.devices.length);
             for (let i = 0; i < this.devices.length; i++) {
-                this.edit[i] = {id: this.devices[i].id, value: false};
+                this.edit[i] = { id: this.devices[i].id, value: false };
             }
             this.device_num = devices.length;
         });
