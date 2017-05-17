@@ -39,14 +39,14 @@ export class OptionsComponent implements OnInit {
         //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
         if (form.valid == true) {
             this.userservice.UpdatePassword(form.value["old-password"], form.value["new-password"]).toPromise().
-                then((data) => { this.PasswordUpdated = true; }).
+                then((data) => { this.PasswordUpdated = true; form.resetForm(); }).
                 catch((error) => {
                     if (error.status == 403) {
                         this.WrongPassword = true;
                     }
 
                 });
-            //form.resetForm();
+            
 
 
 
