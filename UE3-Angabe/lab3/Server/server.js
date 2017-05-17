@@ -127,7 +127,9 @@ app.get('/status/', function (req, res, next) {
  * Update Password
  */
 app.put('/updatePassword/', function (req, res, next) {
-    console.log("todo update password");
+    console.log("updatePassword");
+    console.log(req.body);
+    
 });
 app.get('/devices/:id*?', function (req, res, next) { //*? - optionaler param
     console.log(req.headers);

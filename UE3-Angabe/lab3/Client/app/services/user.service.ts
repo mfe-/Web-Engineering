@@ -12,9 +12,11 @@ export class UserService implements IUserService {
     protected _Location: Location;
     protected _Router: Router;
     protected _httpService: Http;
+    public _ErrorOnLogin: boolean = true;
 
     public constructor(location: Location, router: Router, httpService: Http) {
         this._IsAuthenticated = false;
+        this._ErrorOnLogin = false;
         this._Location = location;
         this._Router = router;
         this._httpService = httpService;
@@ -34,8 +36,8 @@ export class UserService implements IUserService {
         this._User = new User(username, password);
 
         this._httpService.post("http://localhost:8081/login/", { username: this._User.UserName, password: this._User.Password })
-            .toPromise().then(this.setUser.bind(this)).catch(bla => this._User = null);
-            
+            .toPromise().then(this.setUser.bind(this)).catch((bla) => { this._User = null; this._ErrorOnLogin = true; });
+
         return true;
     }
     public IsAuthenticated(): boolean {
@@ -60,7 +62,8 @@ export class UserService implements IUserService {
         this._User.Token = data.token;
 
         this._IsAuthenticated = true;
-        this._Router.navigate(['/overview']);    
+        this._Router.navigate(['/overview']);
+        this._ErrorOnLogin = false;
         return true
     }
 }

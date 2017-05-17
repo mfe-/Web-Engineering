@@ -1,9 +1,9 @@
 import { User } from "../model/user";
 
-export interface IUserService
-{
-    Login(username: String, password: String): boolean ;
+export interface IUserService {
+    _ErrorOnLogin: boolean;
+    Login(username: String, password: String): boolean;
     IsAuthenticated(): boolean;
-    Logout():void;
-    GetUser():User;
+    Logout(): void;
+    GetUser(): User;
 }
