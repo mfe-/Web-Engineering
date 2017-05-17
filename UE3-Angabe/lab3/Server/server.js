@@ -46,8 +46,46 @@ app.post("/updateCurrent", function (req, res) {
      *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
      * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
      */
-
     //device value -> in device details ändern
+    console.log("updateCurrent ");
+
+    var data = null;
+    try {
+        //workaround for 'jsonstring:'''
+        for (var name in req.body) {
+            data = JSON.parse(name);
+        }
+    }
+    catch (ex) {
+        console.log("exception while parsing post data" + ex);
+        res.status(500).send();
+    }
+    //get the device with the overgiven id
+    var d = null;
+    var i = -1;
+    app.devices.forEach(function (element, index) {
+        if (element.id == data.id) {
+            d = element;
+            i = index;
+        }
+    }, this);
+    console.log("updateCurrent for device with id " + d.id);
+    if (d == null) {
+        res.status.send(404);
+    }
+    else {
+        if (app.devices[i].control_units[0] !== undefined) {
+            console.log("updateCurrent set current value");
+            //set new value
+            app.devices[i].control_units[0].current = data.control_unit.current;
+
+            simulation.updatedDeviceValue(app.devices[i], app.devices[i].control_units[0], Number(data.control_unit.current));
+            res.status(200).send();
+        }
+    }
+
+
+    res.status(500).send();
 });
 // Create -> Post
 // Read   -> Get
@@ -175,7 +213,7 @@ app.put('/device/:id*?', function (req, res, next) {
             }
         }
         else {
-            console.log("put: device with id "+  req.params.id+" not found");
+            console.log("put: device with id " + req.params.id + " not found");
             res.status(500).send();
         }
 
@@ -249,6 +287,7 @@ var server = app.listen(8081, function () {
     var port = server.address().port;
     app.start = new Date();
     app.failedLogin = 0;
+    app.tokens = new Array();
     console.log("Big Smart Home Server listening at http://%s:%s", host, port);
 });
 

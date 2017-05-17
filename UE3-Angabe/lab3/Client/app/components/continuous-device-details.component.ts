@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
-import {Device} from "../model/device";
-import {ControlUnit} from "../model/controlUnit";
-import {DeviceService} from "../services/device.service";
-import {Subject} from 'rxjs/Subject';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Device } from "../model/device";
+import { ControlUnit } from "../model/controlUnit";
+import { DeviceService } from "../services/device.service";
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   moduleId: module.id,
@@ -50,10 +50,12 @@ export class ContinuousDeviceDetailsComponent implements OnInit {
     this.log_message += new Date().toLocaleString() + ": " + this.controlUnit.current + " -> " + this.new_value;
     this.controlUnit.log = this.log_message;
     this.controlUnit.current = this.new_value;
+
+    this.deviceService.updateCurrent(this.device, this.controlUnit);
   }
 
   public lineChartData: Array<any> = [
-    {data: [], label: 'Verlauf'}
+    { data: [], label: 'Verlauf' }
   ];
   public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {

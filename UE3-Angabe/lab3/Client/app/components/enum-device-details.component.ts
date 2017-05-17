@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Device} from "../model/device";
-import {ControlUnit} from "../model/controlUnit";
-import {DeviceService} from "../services/device.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { Device } from "../model/device";
+import { ControlUnit } from "../model/controlUnit";
+import { DeviceService } from "../services/device.service";
 
 @Component({
     moduleId: module.id,
@@ -52,6 +52,8 @@ export class EnumDeviceDetailsComponent implements OnInit {
         this.controlUnit.log = this.log_message;
         this.polarChartData = _polarChartData;
         this.controlUnit.current = index;
+
+        this.deviceService.updateCurrent(this.device,this.controlUnit);
     }
 
     isSelected(val: string): boolean {

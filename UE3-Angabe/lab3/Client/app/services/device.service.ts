@@ -6,6 +6,7 @@ import { DeviceParserService } from './device-parser.service';
 
 import 'rxjs/add/operator/toPromise';
 import { Http } from "@angular/http";
+import { ControlUnit } from "../model/controlUnit";
 
 
 @Injectable()
@@ -48,7 +49,7 @@ export class DeviceService {
     }
     createDevice(device: Device): Promise<Device> {
         device.id = "-1";
-        device= this.parserService.parseDevice(device);
+        device = this.parserService.parseDevice(device);
         return this.httpService.post(this.BaseUri + "device/" + device.id, device).toPromise().then(
             (bla) => {
                 var d = this.parserService.parseDevice(bla.json() as Device);
@@ -69,6 +70,35 @@ export class DeviceService {
             this.DeviceList.splice(index, 1);
         }
 
+    }
+    updateCurrent(device: Device, controlUnit: ControlUnit) {
+        var http = new XMLHttpRequest();
+        var url = this.BaseUri + "updateCurrent";
+        var control = new ControlUnit();
+        //clone object
+        control.current = controlUnit.current;
+        control.log = controlUnit.log;
+        control.max = controlUnit.max;
+        control.min = controlUnit.min;
+        control.name = controlUnit.name;
+        control.primary = controlUnit.primary;
+        control.type = controlUnit.type;
+        //because "values" causes an json parser error lets remove this shit
+        control.values = null;
+        var postdata = { id: device.id, control_unit: control };
+
+        var params = encodeURIComponent(JSON.stringify(postdata));
+        http.open("POST", url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        http.onreadystatechange = () => {//Call a function when the state changes.
+            if (http.readyState == 4 && http.status == 200) {
+                //alert(http.responseText);
+            }
+        }
+        http.send(params);
     }
 
 
