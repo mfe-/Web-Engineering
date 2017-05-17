@@ -36,6 +36,8 @@
                class="button button-submit"
                value=" Änderung speichern"/>
       </div>
+      <span *ngIf="WrongPassword==true" style="color:red;">Wrong Password!</span>
+      <span *ngIf="PasswordUpdated==true" style="color:green;">Password updated!</span>
     </form>
   </main>
 </div>

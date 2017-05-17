@@ -34,4 +34,5 @@ export class User {
         this.token = value;
     }
 
+
 }

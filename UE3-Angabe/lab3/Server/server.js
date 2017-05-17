@@ -128,8 +128,24 @@ app.get('/status/', function (req, res, next) {
  */
 app.put('/updatePassword/', function (req, res, next) {
     console.log("updatePassword");
-    console.log(req.body);
-    
+    if (req.body.oldpassword !== undefined && req.body.newpassword) {
+        console.log(req.body);
+        if (app.users.password != req.body.oldpassword) {
+            res.status(403).send();
+        }
+        else {
+            //write new pw into our config
+            fs.writeFile("resources/login.config", "username:admin@mail.com\npassword:"+req.body.newpassword, function (err) {
+                if (err) {
+                    return console.log(err);
+                }
+                app.users.password=req.body.newpassword;
+                console.log("The file was saved!");
+                res.status(200).send();
+            });
+        }
+    }
+
 });
 app.get('/devices/:id*?', function (req, res, next) { //*? - optionaler param
     console.log(req.headers);

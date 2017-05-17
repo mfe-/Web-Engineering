@@ -4,6 +4,7 @@ import { Router, NavigationStart, NavigationEnd } from "@angular/router";
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { User } from "../model/user";
 import { Http } from "@angular/http";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class UserService implements IUserService {
@@ -40,21 +41,16 @@ export class UserService implements IUserService {
 
         return true;
     }
-    public IsAuthenticated(): boolean {
-        return this._IsAuthenticated;
+    public UpdatePassword(oldpassword: string, newpassword: string): Observable<any> {
+        var data: Object = Object.assign({ user: this._User }, { newpassword: newpassword, oldpassword: oldpassword });
+        return this._httpService.put("http://localhost:8081/updatePassword/", data);
     }
-    public get IsLoggedIn(): boolean {
-        return this.IsAuthenticated();
-    }
+
     public Logout(): void {
         this._IsAuthenticated = false;
         this._Router.navigate(["/Login"], {});
     }
-    protected _User: User;
 
-    public GetUser(): User {
-        return this._User;
-    }
     public setUser(response: any) {
         var data = response.json();
         this._User.UserName = data.username;
@@ -65,5 +61,16 @@ export class UserService implements IUserService {
         this._Router.navigate(['/overview']);
         this._ErrorOnLogin = false;
         return true
+    }
+    public IsAuthenticated(): boolean {
+        return this._IsAuthenticated;
+    }
+    public get IsLoggedIn(): boolean {
+        return this.IsAuthenticated();
+    }
+    protected _User: User;
+
+    public GetUser(): User {
+        return this._User;
     }
 }
