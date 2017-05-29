@@ -568,6 +568,17 @@ function getTwitterPublicationString(groupNum, uuid, date) {
 //  - Der Websocket soll auch weiterhin über http abgewickelt werden
 //  - zu https mit node.js siehe https://nodejs.org/api/https.html
 
+var options = {
+    key: fs.readFileSync('server-gruppe55.key'),
+    cert: fs.readFileSync('server.crt'),
+    requestCert: false,
+    rejectUnauthorized: false
+};
+
+var server = https.createServer(options, app).listen(3000, function(){
+    console.log("server started at port 3000");
+    console.log("https://localhost:3000/devices/");
+});
 /**
  * Programmeinstieg
  * Erzeugt einen http Server auf Port 8081 und stellt die REST-Schnittstelle zur Verfügung
