@@ -18,6 +18,15 @@ var uuid = require('uuid');
 var https = require('https');
 var twitter = require('twitter');
 
+var client = new twitter({
+    consumer_key: 'GZ6tiy1XyB9W0P4xEJudQfu',
+    consumer_secret: 'gaJDlW0vf7en46JwHAOkZsTHvtAiZ3QUd2mD1x26J9w',
+    access_token_key: '1366513208-MutXEbBMAVOwrbFmZtj1r4Ih2vcoHGHE2207002',
+    access_token_secret: 'fuRMPWOePlus3xtURWRVnv1TgrjTyK7Zk33evp4KKyA'
+});
+
+app.twitter = client;
+
 var user;
 var devices;
 var invalid_tokens = [];
@@ -26,7 +35,7 @@ var system_start = new Date();
 var failed_logins = 0;
 
 app.set('secret', "superSecret");
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -39,15 +48,15 @@ app.get('/listDevices', function (req, res) {
 
     if (token) {
         // überprüft JWT und ob JWT abgelaufen ist
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
-                res.json({status: 200, message: devices});
+                res.json({ status: 200, message: devices });
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -56,32 +65,45 @@ app.get('/listDevices', function (req, res) {
  */
 app.post("/createDevice", function (req, res) {
     "use strict";
-    if (typeof  req === "undefined" || typeof req.body === "undefined" || typeof req.body.device === "undefined") {
-        res.json({status: 422, message: "Unprocessable entity"});
+    if (typeof req === "undefined" || typeof req.body === "undefined" || typeof req.body.device === "undefined") {
+        res.json({ status: 422, message: "Unprocessable entity" });
         return;
     }
 
     var token = getToken(req);
     if (token) {
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
                 var device = JSON.parse(req.body.device);
                 var id = uuid.v4();
                 device.id = id;
                 devices.devices.push(device);
-                res.json({status: 200, message: devices});
+                res.json({ status: 200, message: devices });
                 sendCreate(JSON.stringify(device));
                 //TODO erstellen Sie einen Publication String für Twitter und senden Sie diesen über die Twitter Bibliothek ab
                 //Tipps:
                 //  - die benötigte Bibliothek ist bereits eingebunden
                 //  - siehe https://www.npmjs.com/package/twitter für eine Beschreibung der Bibliothek
                 //  - verwenden Sie getTwitterPublicationString(groupNum, uuid, date) um den Publication String zu erstellen
+
+
+
+                var client = app.twitter;
+                var message = getTwitterPublicationString(55, id, new Date()) ;
+
+                var params = { screen_name: 'nodejs' };
+                client.post('statuses/update', { status: message }, function (error, tweet, response) {
+                    if (error) {console.log(error); throw error;}
+                    console.log(tweet);  // Tweet body. 
+                    console.log(response);  // Raw response object. 
+                });
+
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -90,31 +112,31 @@ app.post("/createDevice", function (req, res) {
  */
 app.post("/updateDevice", function (req, res) {
     "use strict";
-    if (typeof  req === "undefined" || typeof req.body === "undefined" || typeof req.body.device === "undefined") {
-        res.json({status: 422, message: "Unprocessable entity"});
+    if (typeof req === "undefined" || typeof req.body === "undefined" || typeof req.body.device === "undefined") {
+        res.json({ status: 422, message: "Unprocessable entity" });
         return;
     }
 
     var token = getToken(req);
     if (token) {
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
                 var device = JSON.parse(req.body.device);
 
                 var index = getDeviceIndex(device.id);
                 if (index < 0) {
-                    res.json({status: 422, message: "Unprocessable entity, no such device exists"});
+                    res.json({ status: 422, message: "Unprocessable entity, no such device exists" });
                     return;
                 }
                 devices.devices[index] = device;
-                res.json({status: 200, message: "Device updated"});
+                res.json({ status: 200, message: "Device updated" });
                 sendUpdate(device.id, device.display_name);
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -124,21 +146,21 @@ app.post("/updateDevice", function (req, res) {
  */
 app.post("/updateCurrent", function (req, res) {
     "use strict";
-    if (typeof  req === "undefined" || typeof req.body === "undefined" || typeof req.body.id === "undefined" || typeof req.body.value === "undefined" || typeof req.body.unitId === "undefined") {
-        res.json({status: 422, message: "Unprocessable entity"});
+    if (typeof req === "undefined" || typeof req.body === "undefined" || typeof req.body.id === "undefined" || typeof req.body.value === "undefined" || typeof req.body.unitId === "undefined") {
+        res.json({ status: 422, message: "Unprocessable entity" });
         return;
     }
 
     var token = getToken(req);
     if (token) {
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
 
                 var index = getDeviceIndex(req.body.id);
                 if (index < 0) {
-                    res.json({status: 422, message: "Unprocessable entity, no such device exists"});
+                    res.json({ status: 422, message: "Unprocessable entity, no such device exists" });
                     return;
                 }
 
@@ -150,7 +172,7 @@ app.post("/updateCurrent", function (req, res) {
                 var new_value = req.body.value;
 
                 if (old_value == new_value) {
-                    res.json({status: 400, message: "No changes were made"});
+                    res.json({ status: 400, message: "No changes were made" });
                     return;
                 }
 
@@ -178,11 +200,11 @@ app.post("/updateCurrent", function (req, res) {
                 simulation.updatedDeviceValue(device, control_unit, Number(new_value));
                 refreshControl_unit(device.id, control_unit_id, control_unit.current, log);
 
-                res.json({status: 200, message: log, value: control_unit.current});
+                res.json({ status: 200, message: log, value: control_unit.current });
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -192,16 +214,16 @@ app.post("/updateCurrent", function (req, res) {
  */
 app.post("/deleteDevice", function (req, res) {
     "use strict";
-    if (typeof  req === "undefined" || typeof req.body === "undefined" || typeof req.body.id === "undefined") {
-        res.json({status: 422, message: "Unprocessable entity"});
+    if (typeof req === "undefined" || typeof req.body === "undefined" || typeof req.body.id === "undefined") {
+        res.json({ status: 422, message: "Unprocessable entity" });
         return;
     }
 
     var token = getToken(req);
     if (token) {
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
 
                 var index = getDeviceIndex(req.body.id);
@@ -209,15 +231,15 @@ app.post("/deleteDevice", function (req, res) {
                 if (index >= 0) {
                     var dev = devices.devices;
                     dev.splice(index, 1);
-                    res.json({status: 200, message: "Device removed"});
+                    res.json({ status: 200, message: "Device removed" });
                     sendDelete(req.body.id);
                 } else {
-                    res.json({status: 422, message: "Unprocessable entity, device does not exist"});
+                    res.json({ status: 422, message: "Unprocessable entity, device does not exist" });
                 }
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 
 });
@@ -250,17 +272,17 @@ app.ws('/subscribe', function (ws, req) {
         var token = JSON.parse(msg).token;
         if (token) {
             // überprüft JWT und ob JWT abgelaufen ist
-            jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+            jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
                 if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                    ws.send(JSON.stringify({status: 401, message: "Unauthorized"}));
+                    ws.send(JSON.stringify({ status: 401, message: "Unauthorized" }));
                     ws.close();
                 } else {
                     ws.flag = true;
-                    ws.send(JSON.stringify({status: 200, message: "Subscriptions submitted", method: -1}));
+                    ws.send(JSON.stringify({ status: 200, message: "Subscriptions submitted", method: -1 }));
                 }
             });
         } else {
-            ws.send(JSON.stringify({status: 401, message: "Unauthorized"}));
+            ws.send(JSON.stringify({ status: 401, message: "Unauthorized" }));
             ws.close();
         }
     });
@@ -283,20 +305,20 @@ app.post('/login',
     function (req, res) {
         "use strict";
         if (!req.body.username || !req.body.password) {
-            res.json({status: 422, message: "Unprocessable entity"});
+            res.json({ status: 422, message: "Unprocessable entity" });
             return;
         }
 
         if (req.body.username !== user.username || req.body.password !== user.password) {
-            res.json({status: 400, message: "Bad credentials"});
+            res.json({ status: 400, message: "Bad credentials" });
             failed_logins++;
             return;
         }
         failed_logins = 0;
         // create a token
         user.timestamp = new Date().toLocaleString();
-        var token = jwt.sign(user, app.get('secret'), {expiresIn: "1d"});
-        res.json({status: 200, token: token});
+        var token = jwt.sign(user, app.get('secret'), { expiresIn: "1d" });
+        res.json({ status: 200, token: token });
     }
 );
 
@@ -309,16 +331,16 @@ app.post('/logout',
         var token = getToken(req);
         if (token) {
             // überprüft JWT und ob JWT abgelaufen ist
-            jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+            jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
                 if (err || typeof decoded === "undefined") {
-                    res.json({status: 401, message: "Unauthorized"});
+                    res.json({ status: 401, message: "Unauthorized" });
                 } else {
                     invalid_tokens.push(token);
-                    res.json({status: 200, message: "Logout successfully"});
+                    res.json({ status: 200, message: "Logout successfully" });
                 }
             });
         } else {
-            res.json({status: 401, message: "Unauthorized"});
+            res.json({ status: 401, message: "Unauthorized" });
         }
     }
 );
@@ -332,15 +354,15 @@ app.get('/getStatus', function (req, res) {
 
     if (token) {
         // überprüft JWT und ob JWT abgelaufen ist
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
-                res.json({status: 200, date: system_start, failed: failed_logins});
+                res.json({ status: 200, date: system_start, failed: failed_logins });
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -349,27 +371,27 @@ app.get('/getStatus', function (req, res) {
  */
 app.post('/updatePW', function (req, res) {
     "use strict";
-    if (typeof  req === "undefined" || typeof req.body === "undefined" || typeof req.body.new_password === "undefined" || typeof req.body.repeat_password === "undefined" || typeof req.body.old_password === "undefined") {
-        res.json({status: 422, message: "Unprocessable entity"});
+    if (typeof req === "undefined" || typeof req.body === "undefined" || typeof req.body.new_password === "undefined" || typeof req.body.repeat_password === "undefined" || typeof req.body.old_password === "undefined") {
+        res.json({ status: 422, message: "Unprocessable entity" });
         return;
     }
 
     var token = getToken(req);
     if (token) {
         // überprüft JWT und ob JWT abgelaufen ist
-        jwt.verify(token, app.get('secret'), {ignoreExpiration: false}, function (err, decoded) {
+        jwt.verify(token, app.get('secret'), { ignoreExpiration: false }, function (err, decoded) {
             if (err || typeof decoded === "undefined" || invalid_tokens.indexOf(token) >= 0) {
-                res.json({status: 401, message: "Unauthorized"});
+                res.json({ status: 401, message: "Unauthorized" });
             } else {
                 var new_password = req.body.new_password;
                 var old_password = req.body.old_password;
                 var repeat_password = req.body.repeat_password;
 
                 if (old_password !== user.password) {
-                    res.json({status: 401, errorNum: 0, message: "Old password wrong"});
+                    res.json({ status: 401, errorNum: 0, message: "Old password wrong" });
                     return;
                 } else if (new_password !== repeat_password) {
-                    res.json({status: 401, errorNum: 1, message: "Passwords do not match"})
+                    res.json({ status: 401, errorNum: 1, message: "Passwords do not match" })
                     return;
                 }
                 user.password = new_password;
@@ -378,16 +400,16 @@ app.post('/updatePW', function (req, res) {
                 fs.writeFile('./resources/login.config', data, {}, function (err) {
                     if (err) {
                         console.log("Error writing user config.");
-                        res.json({status: 400, errorNum: 2, message: "Password could not be written"});
+                        res.json({ status: 400, errorNum: 2, message: "Password could not be written" });
                         return;
                     }
-                    res.json({status: 200, message: "Password successfully updated"});
+                    res.json({ status: 200, message: "Password successfully updated" });
                 });
 
             }
         });
     } else {
-        res.json({status: 401, message: "Unauthorized"});
+        res.json({ status: 401, message: "Unauthorized" });
     }
 });
 
@@ -575,7 +597,9 @@ var options = {
     rejectUnauthorized: false
 };
 
-var server = https.createServer(options, app).listen(3000, function(){
+
+
+var server = https.createServer(options, app).listen(3000, function () {
     console.log("server started at port 3000");
     console.log("https://localhost:3000/devices/");
 });
