@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="de" xml:lang="de">
+
 <head>
-  <base href="/"/>
+  <base href="/" />
 
   <meta charset="utf-8">
   <title>BIG Smart Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles/style.css">
 
-  <script src="node_modules/core-js/client/shim.min.js"></script>
-  <script src="node_modules/zone.js/dist/zone.js"></script>
-  <script src="node_modules/systemjs/dist/system.src.js"></script>
-  <script src="node_modules/chart.js/dist/Chart.js"></script>
-  <script src="systemjs.config.js"></script>
+  <!--ungemered-->
+  <!--<script src="vendors/shim.min.js"></script>
+  <script src="vendors/zone.min.js"></script>
+  <script src="vendors/system.js"></script>
+  <script src="vendors/Chart.min.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+  <script src="vendors/animation.js"></script>
+  <script src="vendors/jquery.svg.js"></script>-->
+  <!--<script src="systemjs.config.js"></script>-->
+
+  <!--
+    gemered vendors mit for %f in (*.txt) do type "%f" >> output.txt 
+  -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+  <script src="vendors/merged.js"></script>
 </head>
 <my-app role="document">Loading...</my-app>
-<script src="/scripts/jquery.js"></script>
-<script src="/scripts/animation.js"></script>
-<script src="/scripts/jquery.svg.js"></script>
+
 </html>
-<script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script>
+<script type="text/javascript" src="inline.bundle.js"></script>
+<script type="text/javascript" src="vendor.bundle.js"></script>
+<script type="text/javascript" src="main.bundle.js"></script>
